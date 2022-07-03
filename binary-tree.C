@@ -17,6 +17,51 @@ struct node* new_node(int val)
     return temp;
 }
 
+sturct node* delete_node(struct node* root,int val){
+    if(root == NULL) return NULL;
+    else if(val> root->val){
+        root->right = delete_node(root->right,val);
+    }else if(val< root->val){
+        root->left = delete_node(root->left,val);
+    }else if (val == root->val){
+
+        //if the node has no children
+        if(root->left == NULL && root->right== NULL){
+            free(root);
+            root = NULL;
+        }
+
+
+
+        //if the node has one children
+        //left child
+        else if(root->left != NULL && root->right== NULL){
+            struct node* temp = root->left;
+            *root = *temp;
+            free(temp);
+        }
+        //right child
+         else if(root->left == NULL && root->right!= NULL){
+            struct node* temp = root->right;
+            *root = *temp;
+            free(temp);
+        }
+
+        //if the node has two children
+        else if(root->left != NULL && root->right!= NULL){
+            struct node* temp;
+            temp = root->left;
+            while(temp->right !=NULL)
+                temp = temp->right;
+            root->val = temp->val;
+            root->left = delete_node(root->left, temp->val);
+        }
+
+        return root;
+
+    }
+}
+
 struct node* insert(struct node* root,int val){
     if(root == NULL){
         return new_node(val);
@@ -54,6 +99,8 @@ int main()
 
     search_node(root,5);
     search_node(root,3);
+
+    delete_node(root,2);
 */
 
 }
